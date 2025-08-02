@@ -24,6 +24,15 @@ exports.getTour = catchAsync(async (req, res, next) => {
     fields: "review rating user",
   });
 
+  let isBooked, tourDate;
+  if (req.user) {
+         isBooked = await Booking.find({ user: req.user.id, tour: tour.id });
+         tourDate = isBooked.date;
+    } else {
+       isBooked = 0;
+       tourDate = Date.now();
+    }
+
   if (!tour) {
     return next(new appError("There is no tour with that name", 404));
   }
@@ -32,8 +41,11 @@ exports.getTour = catchAsync(async (req, res, next) => {
 
   //3) Render template using data from 1)
   res.status(200).render("tour", {
+    status: 'success',
     title: `${tour.name} Tour`,
     tour,
+    isBooked,
+    tourDate
   });
 });
 

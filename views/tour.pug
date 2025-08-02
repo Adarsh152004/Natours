@@ -22,7 +22,7 @@ block content
   section.section-header
     .header__hero
       .header__hero-overlay &nbsp;
-      img.header__hero-img(src=`img/tours${tour.imageCover}`, alt= `${tour.name}`)
+      img.header__hero-img(src=`img/tours/${tour.imageCover}`, alt= `${tour.name}`)
 
     .heading-box
       h1.heading-primary
@@ -77,9 +77,28 @@ block content
     #map(data-locations=`${JSON.stringify(tour.locations)}`)
 
   section.section-reviews
+    - if (isBooking && isBooked.length > 0) //- && tourDate < Date.now()
+      button.btn.btn--review.span-all-rows#review-tour(onclick="openForm()") Review tour now!
+
+      .bg-modal
+        .modal-contents
+          .close &times;
+          .form__group.ma-bt-md
+            label.form__label(for='review') Review
+            input#review.form__input(type='text', placeholder='Write your review', required, minlength='10')
+          
+          .form__group.ma-bt-md
+            label.form__label(for='rating') Rating
+            input#ratings.form__input(type='text', placeholder='Rate between 1-5', required, minlength='1')
+
+          .form__group
+            button.btn.btn--green.review-save(data-tour-id=`${tour.id}`) Submit
+
     .reviews
       each review in tour.reviews
         +reviewCard(review)
+
+
 
   section.section-cta
     .cta

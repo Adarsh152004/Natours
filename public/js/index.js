@@ -12,6 +12,9 @@ const logOutBtn = document.querySelector(".nav__el--logout");
 const userDataForm = document.querySelector(".form-user-data");
 const userPasswordForm = document.querySelector(".form-user-password");
 const bookBtn = document.getElementById("book-tour");
+const reviewBtn = document.querySelector('.btn--review');
+const reviewSave = document.querySelector('.review-save');
+const closeReview = document.querySelector('.close');
 
 // Delegation
 if (mapBox) {
@@ -69,4 +72,26 @@ if (bookBtn) {
     const { tourId } = e.target.dataset;
     bookTour(tourId);
   });
+}
+
+if (reviewBtn) {
+    reviewBtn.addEventListener('click', () => {
+        document.querySelector('.bg-modal').style.display = "flex";
+    });
+}
+ 
+if (closeReview) {
+    closeReview.addEventListener("click", () => {
+        document.querySelector('.bg-modal').style.display = "none";
+    });
+}
+ 
+if (reviewSave) {
+    reviewSave.addEventListener("click", async e => {
+        const review = document.getElementById('review').value;
+        const rating = document.getElementById('ratings').value;
+        const { tourId } = e.target.dataset;
+        await createReview(tourId, review, rating);
+        document.querySelector('.bg-modal').style.display = "none";
+    });
 }
